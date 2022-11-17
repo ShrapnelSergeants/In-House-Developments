@@ -85,10 +85,10 @@ public class RobotHardware {
      */
     public void init()    {
         // Define and Initialize Motors (note: need to use reference to actual OpMode).
-        frontLeftDrive   = MecanumTeleop.hardwareMap.get(DcMotor.class, "front_left_drive");
-        frontRightDrive  = MecanumTeleop.hardwareMap.get(DcMotor.class, "front_right_drive");
-        backLeftDrive    = MecanumTeleop.hardwareMap.get(DcMotor.class, "back_left_drive");
-        backRightDrive   = MecanumTeleop.hardwareMap.get(DcMotor.class, "back_right_drive");
+        frontLeftDrive   = MecanumTeleop.hardwareMap.get(DcMotor.class, "left_front_drive");
+        frontRightDrive  = MecanumTeleop.hardwareMap.get(DcMotor.class, "right_front_drive");
+        backLeftDrive    = MecanumTeleop.hardwareMap.get(DcMotor.class, "left_back_drive");
+        backRightDrive   = MecanumTeleop.hardwareMap.get(DcMotor.class, "right_back_drive");
         //armMotor   = myOpMode.hardwareMap.get(DcMotor.class, "arm");
 
         frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -102,10 +102,12 @@ public class RobotHardware {
         switch (Point){
             case 1:
                 if (Speed < 0) {
+                    backRightDrive.setDirection(DcMotor.Direction.REVERSE);
                     backLeftDrive.setPower(Speed);
-                    backRightDrive.setPower(-Speed);
+                    backRightDrive.setPower(Speed);
                 } else {
-                    backLeftDrive.setPower(-Speed);
+                    backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+                    backLeftDrive.setPower(Speed);
                     backRightDrive.setPower(Speed);
                 }
             break;
@@ -115,10 +117,12 @@ public class RobotHardware {
             break;
             case 3:
                 if (Speed < 0) {
+                    frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
                     frontLeftDrive.setPower(Speed);
-                    frontRightDrive.setPower(-Speed);
+                    frontRightDrive.setPower(Speed);
                 } else {
-                    frontLeftDrive.setPower(-Speed);
+                    frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+                    frontLeftDrive.setPower(Speed);
                     frontRightDrive.setPower(Speed);
                 }
             break;
@@ -130,27 +134,35 @@ public class RobotHardware {
     }
     public void spinMecanum(double Speed){
         if(Speed < 0) {
+            frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
+            backRightDrive.setDirection(DcMotor.Direction.REVERSE);
             frontLeftDrive.setPower(Speed);
             backLeftDrive.setPower(Speed);
-            frontRightDrive.setPower(-Speed);
-            backRightDrive.setPower(-Speed);
+            frontRightDrive.setPower(Speed);
+            backRightDrive.setPower(Speed);
         } else if(Speed > 0){
-            frontLeftDrive.setPower(-Speed);
-            backLeftDrive.setPower(-Speed);
+            frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+            backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+            frontLeftDrive.setPower(Speed);
+            backLeftDrive.setPower(Speed);
             frontRightDrive.setPower(Speed);
             backRightDrive.setPower(Speed);
         }
     }
     public void strafeMecanum(double Speed){
         if(Speed < 0){
-            frontLeftDrive.setPower(-Speed);
+            frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+            backRightDrive.setDirection(DcMotor.Direction.REVERSE);
+            frontLeftDrive.setPower(Speed);
             backLeftDrive.setPower(Speed);
             frontRightDrive.setPower(Speed);
-            backRightDrive.setPower(-Speed);
+            backRightDrive.setPower(Speed);
         } else if(Speed > 0){
+            backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+            frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
             frontLeftDrive.setPower(Speed);
-            backLeftDrive.setPower(-Speed);
-            frontRightDrive.setPower(-Speed);
+            backLeftDrive.setPower(Speed);
+            frontRightDrive.setPower(Speed);
             backRightDrive.setPower(Speed);
         }
     }
@@ -169,5 +181,12 @@ public class RobotHardware {
         backLeftDrive.setPower(Speed);
         frontRightDrive.setPower(Speed);
         backRightDrive.setPower(Speed);
+    }
+
+    public void resetWheels(){
+        frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+        backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+        frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
+        backRightDrive.setDirection(DcMotor.Direction.REVERSE);
     }
 }
